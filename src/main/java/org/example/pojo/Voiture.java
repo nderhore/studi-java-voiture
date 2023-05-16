@@ -3,6 +3,9 @@ package org.example.pojo;
 
 public class Voiture {
 
+    int id;
+
+
     Energie energie;
 
     String nom;
@@ -27,6 +30,8 @@ public class Voiture {
         this.state = isState;
     }
 
+
+
     public Voiture(Energie energie, String nom, boolean state) {
         this.energie = energie;
         this.nom = nom;
@@ -36,6 +41,14 @@ public class Voiture {
     @Override
     public String toString(){
         return "Ma voiture est au " + energie + ", et elle s'appelle " + nom;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public Energie getEnergie() {

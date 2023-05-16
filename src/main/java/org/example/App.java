@@ -1,11 +1,15 @@
 package org.example;
 
+import org.example.connector.ConnectDB;
 import org.example.customExceptions.IllegalNumberChoice;
+import org.example.dao.impl.VoitureDAOImpl;
 import org.example.pojo.Energie;
 import org.example.pojo.Garage;
 import org.example.pojo.Voiture;
 import org.example.pojo.VoitureElectrique;
 
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -18,7 +22,7 @@ public class App {
     static Scanner sc = new Scanner(System.in);
 
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws SQLException {
 
 
         //Création d'une voiture
@@ -57,7 +61,9 @@ public class App {
         }catch (ArrayIndexOutOfBoundsException e){
             monEnergie = values[0];
         }
-        System.out.println(new Voiture(monEnergie, nom, stateVoiture));
+        VoitureDAOImpl voitureDAO = new VoitureDAOImpl();
+        Voiture maVoiture = new Voiture(monEnergie, nom, stateVoiture);
+        voitureDAO.add(maVoiture);
 
     }
 
