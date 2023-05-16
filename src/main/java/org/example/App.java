@@ -13,22 +13,23 @@ import java.util.stream.Collectors;
  * Hello world!
  *
  */
-public class App 
-{
-    public static void main( String[] args )
-    {
+public class App {
 
-       Scanner sc = new Scanner(System.in);
+    static Scanner sc = new Scanner(System.in);
 
-       //Création d'une voiture
+
+    public static void main(String[] args) {
+
+
+        //Création d'une voiture
         // -> Energie , state, nom
         System.out.println("donnez moi le nom de votre voiture : ");
         String nom = sc.nextLine();
 
         String state = "";
-        while(!state.equals("O") && !state.equals("N")) {
+        while (!state.equals("O") && !state.equals("N")) {
             System.out.println("est-ce que votre voiture est allumé ? O/N");
-            state = sc.nextLine();
+            state = sc.nextLine().toUpperCase();
         }
         boolean stateVoiture = state.equals("O");
 
@@ -36,33 +37,47 @@ public class App
         Energie[] values = Energie.values();
 
         StringBuilder stringBuilder = new StringBuilder();
-        for (int i = 0; i< values.length; i++){
+        for (int i = 0; i < values.length; i++) {
             stringBuilder.append(i).append(" - ").append(values[i]).append("\n"); //energiesPossible = energiesPossible +
         }
         System.out.println(stringBuilder);
 
+        int nbEnergie = -1;
+
+        try{
+            nbEnergie = choiceEnergie(values);
+        } catch (NumberFormatException e){
+            System.out.println(e.getMessage());
+        }
+
+        Energie monEnergie = null;
+
+        try {
+            monEnergie = values[nbEnergie];
+        }catch (ArrayIndexOutOfBoundsException e){
+            monEnergie = values[0];
+        }
+        System.out.println(new Voiture(monEnergie, nom, stateVoiture));
+
+    }
+
+    public static int choiceEnergie(Energie[] values) throws NumberFormatException{
         boolean verif = false;
         int nbEnergie = -1;
-        while(!verif) {
+        while (!verif) {
             //Gestion d'erreur
             try {
                 System.out.println("Entrez votre choix : ");
                 String saisie = sc.nextLine();
                 nbEnergie = Integer.parseInt(saisie);
-                if(nbEnergie < 0 || nbEnergie >= values.length){
+                if (nbEnergie < 0 || nbEnergie >= values.length) {
                     throw new IllegalNumberChoice();
                 }
                 verif = true;
-            } catch (NumberFormatException e) {
-                System.out.println("Données non valide !");
-            } catch (IllegalNumberChoice e) {
-                System.out.println("Merci de saisir un nombre du menu");
+            }catch (IllegalNumberChoice e){
+                System.out.println(e.getMessage());
             }
         }
-
-        Energie monEnergie = values[nbEnergie];
-
-        System.out.println(new Voiture(monEnergie,nom,stateVoiture));
-
+        return nbEnergie;
     }
 }
